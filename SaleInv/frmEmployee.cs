@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Globalization;
 using System.Data.SqlClient;
 using System.IO;
 using Microsoft.Reporting.WinForms;
-using System.Drawing.Imaging;
-
 
 namespace SaleInv
 {
@@ -23,13 +16,13 @@ namespace SaleInv
             InitializeComponent();
         }
 
-        string fp;
-        Boolean b;
-        SqlCommand com;
-        byte[] photo;
-        SqlDataAdapter da;
-        DataTable dt;
-        DialogResult re1;
+        private string fp;
+        private Boolean b;
+        private SqlCommand com;
+        private byte[] photo;
+        private SqlDataAdapter da;
+        private DataTable dt;
+        private DialogResult re1;
 
         private void LoadData()
         {
@@ -37,7 +30,7 @@ namespace SaleInv
             dt = new DataTable();
             da.Fill(dt);
             dgvEmp.DataSource = dt;
-            dgvEmp.ColumnHeadersDefaultCellStyle.Font = 
+            dgvEmp.ColumnHeadersDefaultCellStyle.Font =
                 new Font("Time News Roman", 14, FontStyle.Bold);
             dgvEmp.DefaultCellStyle.Font = new Font("Khmer OS System", 12);
             dgvEmp.Columns["Name"].Width = 200; //define column width
@@ -174,10 +167,10 @@ namespace SaleInv
 
         private void txtSearch_Leave(object sender, EventArgs e)
         {
-            if(string.IsNullOrEmpty(txtSearch.Text.Trim()))
+            if (string.IsNullOrEmpty(txtSearch.Text.Trim()))
             {
                 txtSearch.ForeColor = Color.Gray;
-                txtSearch.Text="Search ID or Name here...";
+                txtSearch.Text = "Search ID or Name here...";
             }
         }
 
@@ -210,7 +203,7 @@ namespace SaleInv
         {
             if (string.IsNullOrEmpty(txtID.Text.Trim()))
             {
-                re1=MessageBox.Show("Please input ID...", "Missing",
+                re1 = MessageBox.Show("Please input ID...", "Missing",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtID.Focus();
                 return; //stop running
@@ -218,7 +211,7 @@ namespace SaleInv
 
             if (string.IsNullOrEmpty(txtName.Text.Trim()))
             {
-                re1=MessageBox.Show("Please input name...", "Missing",
+                re1 = MessageBox.Show("Please input name...", "Missing",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtName.Focus();
                 return; //stop running
@@ -226,14 +219,14 @@ namespace SaleInv
 
             if (rdoF.Checked == false && rdoM.Checked == false)
             {
-                re1=MessageBox.Show("Please select gender...");
+                re1 = MessageBox.Show("Please select gender...");
                 rdoF.Focus();
                 return;
             }
 
             if (dtpDOB.CustomFormat == " ")
             {
-                re1=MessageBox.Show("Please select birthdate...");
+                re1 = MessageBox.Show("Please select birthdate...");
                 dtpDOB.Focus();
                 SendKeys.Send("%{DOWN}");
                 return;
@@ -241,7 +234,7 @@ namespace SaleInv
 
             if (string.IsNullOrEmpty(txtPos.Text.Trim()))
             {
-                re1=MessageBox.Show("Please input position...", "Missing",
+                re1 = MessageBox.Show("Please input position...", "Missing",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtPos.Focus();
                 return; //stop running
@@ -249,7 +242,7 @@ namespace SaleInv
 
             if (string.IsNullOrEmpty(txtSal.Text.Trim()))
             {
-                re1=MessageBox.Show("Please input salary...", "Missing",
+                re1 = MessageBox.Show("Please input salary...", "Missing",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtSal.Focus();
                 return; //stop running
@@ -257,7 +250,7 @@ namespace SaleInv
 
             if (string.IsNullOrEmpty(txtAdd.Text.Trim()))
             {
-                re1=MessageBox.Show("Please input address...", "Missing",
+                re1 = MessageBox.Show("Please input address...", "Missing",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtAdd.Focus();
                 return; //stop running
@@ -265,7 +258,7 @@ namespace SaleInv
 
             if (dtpHire.CustomFormat == " ")
             {
-                re1=MessageBox.Show("Please select birthdate...", "Missing",
+                re1 = MessageBox.Show("Please select birthdate...", "Missing",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 dtpHire.Focus();
                 SendKeys.Send("%{DOWN}");
@@ -274,7 +267,7 @@ namespace SaleInv
 
             if (string.IsNullOrEmpty(txtContact.Text.Trim()))
             {
-                re1=MessageBox.Show("Please input contact number...", "Missing",
+                re1 = MessageBox.Show("Please input contact number...", "Missing",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtContact.Focus();
                 return; //stop running
@@ -282,7 +275,7 @@ namespace SaleInv
 
             if (picEmp.Image == null)
             {
-                re1=MessageBox.Show("Please select an image...");
+                re1 = MessageBox.Show("Please select an image...");
                 btnBrowse_Click(sender, e);
             }
 
@@ -303,7 +296,6 @@ namespace SaleInv
             LoadData();
             btnNew.Text = "New";
             btnNew.Image = SaleInv.Properties.Resources.Plus_25;
-
         }
 
         private void txtName_Leave(object sender, EventArgs e)
@@ -341,12 +333,12 @@ namespace SaleInv
                 txtContact.Text = row.Cells[7].Value.ToString();
                 dtpHire.CustomFormat = "dd/MM/yyyy";
                 dtpHire.Text = row.Cells[8].Value.ToString();
-                
+
                 //read byte form datagridview
                 photo = (byte[])row.Cells[9].Value;
                 MemoryStream ms = new MemoryStream(photo);
                 picEmp.Image = Image.FromStream(ms);
-                
+
                 btnEdit.Enabled = true;
                 btnDelete.Enabled = true;
             }
@@ -426,11 +418,11 @@ namespace SaleInv
 
                 foreach (DataGridViewRow r in dgvEmp.Rows)
                 {
-                    dtEmpList.Rows.Add(r.Cells[0].Value,r.Cells[1].Value,
-                                       r.Cells[2].Value,r.Cells[3].Value,
-                                       r.Cells[4].Value,r.Cells[5].Value,
-                                       r.Cells[6].Value,r.Cells[7].Value,
-                                       r.Cells[8].Value,r.Cells[9].Value);
+                    dtEmpList.Rows.Add(r.Cells[0].Value, r.Cells[1].Value,
+                                       r.Cells[2].Value, r.Cells[3].Value,
+                                       r.Cells[4].Value, r.Cells[5].Value,
+                                       r.Cells[6].Value, r.Cells[7].Value,
+                                       r.Cells[8].Value, r.Cells[9].Value);
                 }
                 frmRptEmpList RptEmpList = new frmRptEmpList();
                 RptEmpList.VempList.ProcessingMode = ProcessingMode.Local;
@@ -443,9 +435,8 @@ namespace SaleInv
 
                 RptEmpList.Show();
                 RptEmpList.VempList.Refresh();
-
             }
-            else if(re == DialogResult.No)
+            else if (re == DialogResult.No)
             {
                 frmRptEmp RptEmp = new frmRptEmp();
                 RptEmp.Vemp.ProcessingMode = ProcessingMode.Local;
@@ -457,7 +448,7 @@ namespace SaleInv
                 ReportParameter p2 = new ReportParameter("ename", txtName.Text);
                 RptEmp.Vemp.LocalReport.SetParameters(p2);
                 string gen;
-                if(rdoF.Checked==true)
+                if (rdoF.Checked == true)
                     gen = "ស";
                 else
                     gen = "ប";
